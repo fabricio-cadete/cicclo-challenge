@@ -13,5 +13,9 @@ public class InMemoryLaundryServiceRepository : ILaundryServiceRepository
         LaundryService.Create("Secagem", ServiceType.Dry, 20.90m)
     ];
 
-    public IReadOnlyList<LaundryService> GetAll() => _services;
+    public Task<IReadOnlyList<LaundryService>> GetAllAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult(_services);
+
+    public Task<LaundryService?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        Task.FromResult(_services.FirstOrDefault(s => s.Id == id));
 }

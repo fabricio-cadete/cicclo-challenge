@@ -9,17 +9,21 @@ public class ListServicesQueryTests
 {
     private class FakeRepository(params LaundryService[] services) : ILaundryServiceRepository
     {
-        public IReadOnlyList<LaundryService> GetAll() => services;
+        public Task<IReadOnlyList<LaundryService>> GetAllAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<LaundryService>>(services);
+
+        public Task<LaundryService?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+            Task.FromResult(services.FirstOrDefault(s => s.Id == id));
     }
 
     [Fact]
-    public void Handle_ReturnsAllServicesWithPrices()
+    public async Task Handle_ReturnsAllServicesWithPrices()
     {
         var wash = LaundryService.Create("Lavagem", ServiceType.Wash, 18.90m);
         var dry = LaundryService.Create("Secagem", ServiceType.Dry, 20.90m);
-        var query = new ListServicesQuery(new FakeRepository(wash, dry));
+        var handler = new ListServicesQueryHandler(new FakeRepository(wash, dry));
 
-        var result = query.Handle();
+        var result = await handler.Handle(new ListServicesQuery());
 
         Assert.Equal(2, result.Count);
         Assert.Contains(result, s => s.Id == wash.Id && s.Name == "Lavagem" && s.Price == 18.90m);
@@ -27,10 +31,10 @@ public class ListServicesQueryTests
     }
 
     [Fact]
-    public void Handle_NoServices_ReturnsEmptyList()
+    public async Task Handle_NoServices_ReturnsEmptyList()
     {
-        var query = new ListServicesQuery(new FakeRepository());
+        var handler = new ListServicesQueryHandler(new FakeRepository());
 
-        Assert.Empty(query.Handle());
+        Assert.Empty(await handler.Handle(new ListServicesQuery()));
     }
 }

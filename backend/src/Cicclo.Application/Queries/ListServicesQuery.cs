@@ -1,14 +1,18 @@
 using Cicclo.Application.Abstractions;
-using Cicclo.Domain.Enums;
+using Cicclo.Application.Dtos;
 
 namespace Cicclo.Application.Queries;
 
-public record ServiceDto(Guid Id, string Name, ServiceType Type, decimal Price);
+public record ListServicesQuery;
 
-public class ListServicesQuery(ILaundryServiceRepository services)
+public class ListServicesQueryHandler(ILaundryServiceRepository services)
+    : IQueryHandler<ListServicesQuery, IReadOnlyList<ServiceDto>>
 {
-    public IReadOnlyList<ServiceDto> Handle() =>
-        services.GetAll()
-            .Select(s => new ServiceDto(s.Id, s.Name, s.Type, s.Price))
-            .ToList();
+    public async Task<IReadOnlyList<ServiceDto>> Handle(
+        ListServicesQuery query, CancellationToken cancellationToken = default)
+    {
+        var all = await services.GetAllAsync(cancellationToken);
+
+        return all.Select(s => new ServiceDto(s.Id, s.Name, s.Type, s.Price)).ToList();
+    }
 }

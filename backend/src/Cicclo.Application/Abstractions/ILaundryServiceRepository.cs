@@ -4,5 +4,7 @@ namespace Cicclo.Application.Abstractions;
 
 public interface ILaundryServiceRepository
 {
-    IReadOnlyList<LaundryService> GetAll();
+    Task<IReadOnlyList<LaundryService>> GetAllAsync(CancellationToken cancellationToken = default);
+
+    Task<LaundryService?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }
