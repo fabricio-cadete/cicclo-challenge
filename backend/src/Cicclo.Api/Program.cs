@@ -14,6 +14,8 @@ builder.Services.ConfigureHttpJsonOptions(o => o.SerializerOptions.Converters.Ad
 // Singleton: os dados ficam em memória enquanto a API estiver rodando.
 builder.Services.AddSingleton<ILaundryServiceRepository, InMemoryLaundryServiceRepository>();
 builder.Services.AddScoped<IQueryHandler<ListServicesQuery, IReadOnlyList<ServiceDto>>, ListServicesQueryHandler>();
+builder.Services.AddSingleton<IWalletRepository, InMemoryWalletRepository>();
+builder.Services.AddScoped<IQueryHandler<GetWalletQuery, WalletDto>, GetWalletQueryHandler>();
 
 var app = builder.Build();
 
@@ -28,5 +30,9 @@ app.MapGet("/health", () => Results.Ok(new { status = "Healthy" }))
 app.MapGet("/services", async (IQueryHandler<ListServicesQuery, IReadOnlyList<ServiceDto>> handler, CancellationToken ct) =>
         Results.Ok(await handler.Handle(new ListServicesQuery(), ct)))
     .WithName("ListServices");
+
+app.MapGet("/wallet", async (IQueryHandler<GetWalletQuery, WalletDto> handler, CancellationToken ct) =>
+        Results.Ok(await handler.Handle(new GetWalletQuery(), ct)))
+    .WithName("GetWallet");
 
 app.Run();

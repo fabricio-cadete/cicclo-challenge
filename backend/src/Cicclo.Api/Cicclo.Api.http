@@ -12,3 +12,8 @@ Accept: application/json
 
 GET {{Cicclo.Api_HostAddress}}/openapi/v1.json
 Accept: application/json
+
+###
+
+GET {{Cicclo.Api_HostAddress}}/wallet
+Accept: application/json
