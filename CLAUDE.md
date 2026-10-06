@@ -48,7 +48,7 @@ cicclo-challenge/
 
 ## Estado atual
 
-Estrutura, configurações e inicialização. O app já tem o axios configurado em `mobile/src/services/api.ts`. O Domain já tem Wallet, LaundryService e ServiceExecution com testes xUnit. Ainda **não há**: casos de uso na Application, endpoints, autenticação, banco de dados ou chamadas do app à API.
+Estrutura, configurações e inicialização. O app já tem o axios configurado em `mobile/src/services/api.ts`. O Domain já tem Wallet, LaundryService e ServiceExecution com testes xUnit. A API expõe `GET /services` (dados em memória, sem banco de dados). Ainda **não há**: execução de serviço, endpoint de carteira, autenticação ou chamadas do app à API.
 
 ## Convenções de trabalho
 
