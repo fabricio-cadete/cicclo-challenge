@@ -89,7 +89,7 @@ Application.Tests -> Application
 
 Domain não depende de outras camadas. Application concentra os futuros casos de uso e contratos. Infrastructure implementará esses contratos. Api será o ponto de entrada HTTP e de composição das dependências.
 
-As pastas Commands, Queries e Abstractions preparam a organização para CQRS com MediatR (sem handlers vazios). No app, as pastas de views, viewmodels, models e services reservam a separação para MVVM. A tela inicial ainda não precisa de ViewModel.
+As pastas Commands, Queries e Abstractions preparam a organização para CQRS, sem adicionar mediador ou handlers vazios. No app, as pastas de views, viewmodels, models e services reservam a separação para MVVM. A tela inicial ainda não precisa de ViewModel.
 
 ## Escopo desta etapa
 

@@ -27,7 +27,7 @@ Application.Tests -> Application
 ```
 
 - Domain não depende de nenhuma outra camada.
-- Organizado para CQRS com **MediatR** (pacote na Application, registrado por `AddApplication()` em `Cicclo.Application/DependencyInjection.cs`). Commands e Queries são `IRequest` com handler próprio; não criar handlers vazios.
+- Organizado para CQRS **sem mediador** (sem MediatR por questão de licença) e sem handlers vazios: casos de uso são classes simples na Application, injetadas pela API.
 
 ## Comandos
 
