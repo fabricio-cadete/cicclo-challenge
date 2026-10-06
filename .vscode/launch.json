@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API (.NET)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-api",
+      "program": "${workspaceFolder}/backend/src/Cicclo.Api/bin/Debug/net10.0/Cicclo.Api.dll",
+      "cwd": "${workspaceFolder}/backend/src/Cicclo.Api",
+      "launchSettingsFilePath": "${workspaceFolder}/backend/src/Cicclo.Api/Properties/launchSettings.json",
+      "launchSettingsProfile": "http",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    }
+  ]
+}
