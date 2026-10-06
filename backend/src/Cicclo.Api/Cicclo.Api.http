@@ -1,4 +1,6 @@
 @Cicclo.Api_HostAddress = http://localhost:5080
+# Copie um id retornado por GET /services
+@serviceId = 00000000-0000-0000-0000-000000000000
 
 GET {{Cicclo.Api_HostAddress}}/health
 Accept: application/json
@@ -17,3 +19,11 @@ Accept: application/json
 
 GET {{Cicclo.Api_HostAddress}}/wallet
 Accept: application/json
+
+###
+
+# requestId identifica a tentativa; repetir o mesmo valor não cobra de novo
+POST {{Cicclo.Api_HostAddress}}/services/{{serviceId}}/executions
+Content-Type: application/json
+
+{ "requestId": "{{$guid}}" }
