@@ -1,0 +1,9 @@
+@Cicclo.Api_HostAddress = http://localhost:5080
+
+GET {{Cicclo.Api_HostAddress}}/health
+Accept: application/json
+
+###
+
+GET {{Cicclo.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
