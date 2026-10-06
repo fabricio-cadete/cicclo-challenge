@@ -3,7 +3,7 @@ using Cicclo.Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cicclo.Api;
+namespace Cicclo.Api.ExceptionHandling;
 
 // Converte exceções conhecidas em respostas HTTP; qualquer outra vira 500.
 public class ApiExceptionHandler : IExceptionHandler

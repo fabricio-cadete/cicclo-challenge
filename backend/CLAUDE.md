@@ -27,6 +27,7 @@ Application.Tests -> Application
 ```
 
 - Domain não depende de nenhuma outra camada.
+- Api usa controllers (`Controllers/`), DTOs de entrada em `Contracts/` e o tratamento de exceções em `ExceptionHandling/`. Controllers só chamam handlers da Application; `Program.cs` apenas compõe as dependências (o `/health` continua como endpoint mínimo).
 - Organizado para CQRS **sem mediador** (sem MediatR por questão de licença) e sem handlers vazios: casos de uso são classes simples na Application, injetadas pela API.
 
 ## Comandos
