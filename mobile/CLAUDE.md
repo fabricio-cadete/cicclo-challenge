@@ -12,7 +12,8 @@ src/
 ├── viewmodels/  # hooks com estado e ações das telas
 ├── models/      # tipos e contratos de dados
 ├── services/    # comunicação HTTP e integrações
-└── components/  # componentes visuais reutilizáveis
+├── components/  # componentes visuais reutilizáveis
+└── theme/       # cores e tokens visuais (colors.ts)
 ```
 
 ## Comandos
@@ -44,6 +45,11 @@ Instalar dependências com `npx expo install <pacote>` (resolve versões compat�
 - Cada tela ou componente tem os estilos em **arquivo próprio** ao lado dele, com sufixo `.styles.ts` (ex.: `views/HomeScreen.tsx` importa de `views/HomeScreen.styles.ts`).
 - O arquivo de estilos exporta o resultado de `StyleSheet.create`.
 - Não declarar `StyleSheet.create` dentro do componente/tela.
+
+## Tema
+
+- A cor primária do app é `#634A72`, definida em `src/theme/colors.ts` (`colors.primary`).
+- Estilos importam as cores de `theme/colors.ts`; não repetir hexadecimais nos arquivos `.styles.ts`.
 
 ## Navegação
 

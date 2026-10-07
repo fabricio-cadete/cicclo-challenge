@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { colors } from '../theme/colors';
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -11,7 +13,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 36,
     fontWeight: '700',
-    color: '#14675A',
+    color: colors.primary,
   },
   subtitle: {
     marginTop: 12,
