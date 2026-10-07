@@ -3,6 +3,7 @@ import { FlatList, Text, View } from 'react-native';
 
 import { Button } from '../components/Button';
 import { ConfirmDialog } from '../components/ConfirmDialog';
+import { ErrorBanner } from '../components/ErrorBanner';
 import { Loading } from '../components/Loading';
 import { useHomeViewModel } from '../viewmodels/useHomeViewModel';
 import { formatCurrency } from '../utils/formatCurrency';
@@ -17,7 +18,7 @@ export default function HomeScreen() {
     reload,
     selectedService,
     executing,
-    feedback,
+    executionError,
     canExecute,
     selectService,
     cancelSelection,
@@ -50,11 +51,7 @@ export default function HomeScreen() {
         <Text style={styles.walletBalance}>{formatCurrency(wallet?.balance ?? 0)}</Text>
       </View>
 
-      {feedback && (
-        <View style={[styles.feedback, feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError]}>
-          <Text style={styles.feedbackText}>{feedback.message}</Text>
-        </View>
-      )}
+      {executionError && <ErrorBanner message={executionError} />}
 
       <Text style={styles.sectionTitle}>Serviços disponíveis</Text>
 

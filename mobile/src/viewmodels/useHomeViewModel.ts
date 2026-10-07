@@ -6,10 +6,7 @@ import { LaundryService } from '../models/LaundryService';
 import { Wallet } from '../models/Wallet';
 import { executeService, getServices } from '../services/laundryService';
 import { getWallet } from '../services/walletService';
-
-export type Feedback = { type: 'success' | 'error'; message: string };
-
-const FEEDBACK_DURATION_MS = 4000;
+import { notifySuccess } from '../utils/notify';
 
 function executionErrorMessage(error: unknown): string {
   const status = isAxiosError(error) ? error.response?.status : undefined;
@@ -29,7 +26,8 @@ export function useHomeViewModel() {
   // Serviço aguardando confirmação do usuário.
   const [selectedService, setSelectedService] = useState<LaundryService | null>(null);
   const [executing, setExecuting] = useState(false);
-  const [feedback, setFeedback] = useState<Feedback | null>(null);
+  // Erro da última execução; fica visível até a próxima ação (ErrorBanner). Sucesso vira toast.
+  const [executionError, setExecutionError] = useState<string | null>(null);
 
   // requestId por serviço. Só é descartado quando a API responde (sucesso ou erro de negócio);
   // se faltar resposta (rede/timeout), a nova tentativa reaproveita o id e a API não cobra duas vezes.
@@ -59,20 +57,13 @@ export function useHomeViewModel() {
     };
   }, [reloadCount]);
 
-  useEffect(() => {
-    if (!feedback) return;
-
-    const timer = setTimeout(() => setFeedback(null), FEEDBACK_DURATION_MS);
-    return () => clearTimeout(timer);
-  }, [feedback]);
-
   const reload = useCallback(() => {
     setLoading(true);
     setReloadCount((count) => count + 1);
   }, []);
 
   const selectService = useCallback((service: LaundryService) => {
-    setFeedback(null);
+    setExecutionError(null);
     setSelectedService(service);
   }, []);
 
@@ -96,10 +87,10 @@ export function useHomeViewModel() {
       const execution = await executeService(service.id, requestId);
       requestIds.current.delete(service.id);
       setWallet((current) => (current ? { ...current, balance: execution.walletBalance } : current));
-      setFeedback({ type: 'success', message: `Serviço "${service.name}" solicitado com sucesso!` });
+      notifySuccess(`Serviço "${service.name}" solicitado com sucesso!`);
     } catch (e) {
       if (isAxiosError(e) && e.response) requestIds.current.delete(service.id);
-      setFeedback({ type: 'error', message: executionErrorMessage(e) });
+      setExecutionError(executionErrorMessage(e));
     } finally {
       setExecuting(false);
       setSelectedService(null);
@@ -114,7 +105,7 @@ export function useHomeViewModel() {
     reload,
     selectedService,
     executing,
-    feedback,
+    executionError,
     canExecute,
     selectService,
     cancelSelection,

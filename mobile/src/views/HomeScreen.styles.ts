@@ -48,21 +48,6 @@ export const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
-  feedback: {
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 16,
-  },
-  feedbackSuccess: {
-    backgroundColor: '#2E7D32',
-  },
-  feedbackError: {
-    backgroundColor: '#B3261E',
-  },
-  feedbackText: {
-    fontSize: 14,
-    color: '#FFFFFF',
-  },
   serviceName: {
     fontSize: 16,
     color: '#1F2933',

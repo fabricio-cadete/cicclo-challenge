@@ -12,7 +12,7 @@ src/
 ├── viewmodels/  # hooks com estado e ações das telas
 ├── models/      # tipos e contratos de dados
 ├── services/    # comunicação HTTP e integrações
-├── components/  # componentes visuais reutilizáveis
+├── components/  # componentes reutilizáveis (Button, Loading, ConfirmDialog, ErrorBanner)
 ├── utils/       # funções auxiliares (ex.: formatCurrency)
 └── theme/       # cores e tokens visuais (colors.ts)
 ```
@@ -51,6 +51,12 @@ Instalar dependências com `npx expo install <pacote>` (resolve versões compat�
 
 - A cor primária do app é `#634A72`, definida em `src/theme/colors.ts` (`colors.primary`).
 - Estilos importam as cores de `theme/colors.ts`; não repetir hexadecimais nos arquivos `.styles.ts`.
+
+## Feedback ao usuário
+
+- Sucesso: toast transitório (`react-native-toast-message`) via `utils/notify.ts` (`notifySuccess`); o `<Toast />` fica em `App.tsx`, como último elemento.
+- Erro: `ErrorBanner` inline, que permanece até a próxima ação do usuário. Mensagens amigáveis, sem termos técnicos.
+- Carregamento: spinner (`Loading`) ao carregar a tela; durante uma operação, o botão fica desabilitado e mostra "Processando...".
 
 ## Navegação
 
