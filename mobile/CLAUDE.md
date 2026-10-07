@@ -12,7 +12,7 @@ src/
 ├── viewmodels/  # hooks com estado e ações das telas
 ├── models/      # tipos e contratos de dados
 ├── services/    # comunicação HTTP e integrações
-├── components/  # componentes reutilizáveis (Button, Loading, ConfirmDialog, ErrorBanner)
+├── components/  # componentes reutilizáveis (Button, Loading, ConfirmDialog)
 ├── utils/       # funções auxiliares (ex.: formatCurrency)
 └── theme/       # cores e tokens visuais (colors.ts)
 ```
@@ -54,8 +54,8 @@ Instalar dependências com `npx expo install <pacote>` (resolve versões compat�
 
 ## Feedback ao usuário
 
-- Sucesso: toast transitório (`react-native-toast-message`) via `utils/notify.ts` (`notifySuccess`); o `<Toast />` fica em `App.tsx`, como último elemento.
-- Erro: `ErrorBanner` inline, que permanece até a próxima ação do usuário. Mensagens amigáveis, sem termos técnicos.
+- Sucesso e erro de operações: toast (`react-native-toast-message`) via `utils/notify.ts` (`notifySuccess` e `notifyError`); o `<Toast />` fica em `App.tsx`, como último elemento. Erros ficam mais tempo na tela (5 s) que sucessos (3 s).
+- Mensagens amigáveis, sem termos técnicos. Falha ao carregar a tela inicial mostra o texto de erro com o botão "Tentar novamente".
 - Carregamento: spinner (`Loading`) ao carregar a tela; durante uma operação, o botão fica desabilitado e mostra "Processando...".
 
 ## Navegação

@@ -6,7 +6,7 @@ import { LaundryService } from '../models/LaundryService';
 import { Wallet } from '../models/Wallet';
 import { executeService, getServices } from '../services/laundryService';
 import { getWallet } from '../services/walletService';
-import { notifySuccess } from '../utils/notify';
+import { notifyError, notifySuccess } from '../utils/notify';
 
 function executionErrorMessage(error: unknown): string {
   const status = isAxiosError(error) ? error.response?.status : undefined;
@@ -26,8 +26,6 @@ export function useHomeViewModel() {
   // Serviço aguardando confirmação do usuário.
   const [selectedService, setSelectedService] = useState<LaundryService | null>(null);
   const [executing, setExecuting] = useState(false);
-  // Erro da última execução; fica visível até a próxima ação (ErrorBanner). Sucesso vira toast.
-  const [executionError, setExecutionError] = useState<string | null>(null);
 
   // requestId por serviço. Só é descartado quando a API responde (sucesso ou erro de negócio);
   // se faltar resposta (rede/timeout), a nova tentativa reaproveita o id e a API não cobra duas vezes.
@@ -63,7 +61,6 @@ export function useHomeViewModel() {
   }, []);
 
   const selectService = useCallback((service: LaundryService) => {
-    setExecutionError(null);
     setSelectedService(service);
   }, []);
 
@@ -90,7 +87,7 @@ export function useHomeViewModel() {
       notifySuccess(`Serviço "${service.name}" solicitado com sucesso!`);
     } catch (e) {
       if (isAxiosError(e) && e.response) requestIds.current.delete(service.id);
-      setExecutionError(executionErrorMessage(e));
+      notifyError(executionErrorMessage(e));
     } finally {
       setExecuting(false);
       setSelectedService(null);
@@ -105,7 +102,6 @@ export function useHomeViewModel() {
     reload,
     selectedService,
     executing,
-    executionError,
     canExecute,
     selectService,
     cancelSelection,
