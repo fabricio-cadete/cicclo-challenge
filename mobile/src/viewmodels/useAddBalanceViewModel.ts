@@ -10,11 +10,13 @@ export const QUICK_AMOUNTS = [20, 50, 100];
 // Limite só para o campo não estourar; a validação de verdade é da API.
 const MAX_CENTS = 99_999_999;
 
-function depositErrorMessage(error: unknown): string {
+function depositError(error: unknown): { title: string; detail: string } {
   const status = isAxiosError(error) ? error.response?.status : undefined;
 
-  if (status === 400) return 'Informe um valor válido.';
-  return 'Não foi possível adicionar saldo. Tente novamente mais tarde.';
+  if (status === 400) {
+    return { title: 'Valor inválido', detail: 'Informe um valor maior que zero.' };
+  }
+  return { title: 'Não foi possível adicionar saldo', detail: 'Tente novamente mais tarde.' };
 }
 
 export function useAddBalanceViewModel() {
@@ -41,10 +43,11 @@ export function useAddBalanceViewModel() {
     setSubmitting(true);
     try {
       await addBalance(amount);
-      notifySuccess('Saldo adicionado com sucesso!');
+      notifySuccess('Saldo adicionado com sucesso!', `${formatCurrency(amount)} na sua carteira.`);
       return true;
     } catch (e) {
-      notifyError(depositErrorMessage(e));
+      const { title, detail } = depositError(e);
+      notifyError(title, detail);
       return false;
     } finally {
       setSubmitting(false);

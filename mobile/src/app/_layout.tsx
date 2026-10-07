@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
-import Toast from 'react-native-toast-message';
 
+import { AppToast } from '../components/AppToast';
 import { colors } from '../theme/colors';
 
 export default function RootLayout() {
@@ -10,7 +10,8 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="add-balance" options={{ title: 'Adicionar saldo' }} />
       </Stack>
-      <Toast />
+      {/* Deve ser o último elemento para ficar por cima das telas. */}
+      <AppToast />
     </>
   );
 }

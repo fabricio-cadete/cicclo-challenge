@@ -35,7 +35,7 @@ describe('Adicionar saldo', () => {
     await user.press(screen.getByRole('button', { name: 'Adicionar saldo' }));
 
     expect(mockedApi.post).toHaveBeenCalledWith('/wallet/deposit', { amount: 25.5 });
-    expect(notifySuccess).toHaveBeenCalledWith('Saldo adicionado com sucesso!');
+    expect(notifySuccess).toHaveBeenCalledWith('Saldo adicionado com sucesso!', `${formatCurrency(25.5)} na sua carteira.`);
     expect(await screen.findByText(formatCurrency(75.5))).toBeOnTheScreen();
 
     // voltou para a Home: a tela de adicionar saldo não está mais visível
@@ -90,7 +90,7 @@ describe('Adicionar saldo', () => {
     await user.press(screen.getByRole('button', { name: 'Adicionar saldo' }));
 
     expect(await screen.findByPlaceholderText('R$ 0,00')).toBeOnTheScreen();
-    expect(notifyError).toHaveBeenCalledWith('Não foi possível adicionar saldo. Tente novamente mais tarde.');
+    expect(notifyError).toHaveBeenCalledWith('Não foi possível adicionar saldo', 'Tente novamente mais tarde.');
     expect(notifySuccess).not.toHaveBeenCalled();
   });
 });

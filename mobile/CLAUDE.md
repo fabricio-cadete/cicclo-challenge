@@ -63,7 +63,7 @@ Instalar dependências com `npx expo install <pacote>` (resolve versões compat�
 
 ## Feedback ao usuário
 
-- Sucesso e erro de operações: toast (`react-native-toast-message`) via `utils/notify.ts` (`notifySuccess` e `notifyError`); o `<Toast />` fica em `App.tsx`, como último elemento. Erros ficam mais tempo na tela (5 s) que sucessos (3 s).
+- Sucesso e erro de operações: toast (`react-native-toast-message`) via `utils/notify.ts` (`notifySuccess(título, detalhe?)` e `notifyError(título, detalhe?)`), sempre em duas linhas: título curto (ex.: "Secagem solicitada com sucesso!") e detalhe. O `<AppToast />` (`components/AppToast.tsx`) fica em `src/app/_layout.tsx`, como último elemento, e afasta o toast do topo usando a safe area. Erros ficam mais tempo na tela (5 s) que sucessos (3 s).
 - Mensagens amigáveis, sem termos técnicos. Falha ao carregar a tela inicial mostra o texto de erro com o botão "Tentar novamente".
 - Carregamento: spinner (`Loading`) ao carregar a tela; durante uma operação, o botão fica desabilitado e mostra "Processando...".
 

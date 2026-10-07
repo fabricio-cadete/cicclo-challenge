@@ -62,7 +62,10 @@ describe('Home: utilizar serviço', () => {
     expect(mockedApi.post).toHaveBeenCalledWith(`/services/${WASH.id}/execute`, {
       requestId: expect.any(String),
     });
-    expect(notifySuccess).toHaveBeenCalledWith('Serviço "Lavagem" solicitado com sucesso!');
+    expect(notifySuccess).toHaveBeenCalledWith(
+      'Lavagem solicitada com sucesso!',
+      `${formatCurrency(18.9)} debitados da sua carteira.`,
+    );
     expect(screen.queryByText('Confirmar uso do serviço')).not.toBeOnTheScreen();
   });
 
@@ -117,7 +120,7 @@ describe('Home: utilizar serviço', () => {
     await user.press(screen.getByRole('button', { name: 'Confirmar' }));
 
     expect(await screen.findByText(formatCurrency(50))).toBeOnTheScreen();
-    expect(notifyError).toHaveBeenCalledWith('Saldo insuficiente para utilizar este serviço.');
+    expect(notifyError).toHaveBeenCalledWith('Saldo insuficiente', 'Adicione saldo para utilizar este serviço.');
     expect(notifySuccess).not.toHaveBeenCalled();
   });
 
@@ -133,7 +136,7 @@ describe('Home: utilizar serviço', () => {
     await user.press(screen.getAllByRole('button', { name: 'Utilizar' })[0]);
     await user.press(screen.getByRole('button', { name: 'Confirmar' }));
     await waitFor(() =>
-      expect(notifyError).toHaveBeenCalledWith('Não foi possível utilizar o serviço. Tente novamente mais tarde.'),
+      expect(notifyError).toHaveBeenCalledWith('Não foi possível utilizar o serviço', 'Tente novamente mais tarde.'),
     );
 
     // 2ª tentativa: conexão voltou

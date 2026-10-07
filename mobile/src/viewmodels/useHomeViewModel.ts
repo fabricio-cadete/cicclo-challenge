@@ -7,14 +7,19 @@ import { LaundryService } from '../models/LaundryService';
 import { Wallet } from '../models/Wallet';
 import { executeService, getServices } from '../services/laundryService';
 import { getWallet } from '../services/walletService';
+import { formatCurrency } from '../utils/formatCurrency';
 import { notifyError, notifySuccess } from '../utils/notify';
 
-function executionErrorMessage(error: unknown): string {
+function executionError(error: unknown): { title: string; detail: string } {
   const status = isAxiosError(error) ? error.response?.status : undefined;
 
-  if (status === 422) return 'Saldo insuficiente para utilizar este serviço.';
-  if (status === 404) return 'Este serviço não está mais disponível.';
-  return 'Não foi possível utilizar o serviço. Tente novamente mais tarde.';
+  if (status === 422) {
+    return { title: 'Saldo insuficiente', detail: 'Adicione saldo para utilizar este serviço.' };
+  }
+  if (status === 404) {
+    return { title: 'Serviço indisponível', detail: 'Este serviço não está mais disponível.' };
+  }
+  return { title: 'Não foi possível utilizar o serviço', detail: 'Tente novamente mais tarde.' };
 }
 
 export function useHomeViewModel() {
@@ -82,6 +87,8 @@ export function useHomeViewModel() {
     if (!selectedService || executing) return;
 
     const service = selectedService;
+
+    //Idempotência
     const requestId = requestIds.current.get(service.id) ?? randomUUID();
     requestIds.current.set(service.id, requestId);
 
@@ -90,10 +97,14 @@ export function useHomeViewModel() {
       const execution = await executeService(service.id, requestId);
       requestIds.current.delete(service.id);
       setWallet((current) => (current ? { ...current, balance: execution.walletBalance } : current));
-      notifySuccess(`Serviço "${service.name}" solicitado com sucesso!`);
+      notifySuccess(
+        `${service.name} solicitada com sucesso!`,
+        `${formatCurrency(service.price)} debitados da sua carteira.`,
+      );
     } catch (e) {
       if (isAxiosError(e) && e.response) requestIds.current.delete(service.id);
-      notifyError(executionErrorMessage(e));
+      const { title, detail } = executionError(e);
+      notifyError(title, detail);
     } finally {
       setExecuting(false);
       setSelectedService(null);
