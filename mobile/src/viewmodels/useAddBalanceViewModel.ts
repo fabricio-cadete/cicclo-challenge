@@ -4,7 +4,11 @@ import { useCallback, useState } from 'react';
 import { addBalance } from '../services/walletService';
 import { formatCurrency } from '../utils/formatCurrency';
 import { notifyError, notifySuccess } from '../utils/notify';
-import { parseAmount } from '../utils/parseAmount';
+
+export const QUICK_AMOUNTS = [20, 50, 100];
+
+// Limite só para o campo não estourar; a validação de verdade é da API.
+const MAX_CENTS = 99_999_999;
 
 function depositErrorMessage(error: unknown): string {
   const status = isAxiosError(error) ? error.response?.status : undefined;
@@ -14,20 +18,30 @@ function depositErrorMessage(error: unknown): string {
 }
 
 export function useAddBalanceViewModel() {
-  const [amountText, setAmountText] = useState('');
+  // O valor é guardado em centavos: o usuário digita só números e a máscara de moeda
+  // (R$ 25,50) é aplicada na exibição. Evita erros de ponto flutuante e de separador.
+  const [cents, setCents] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
-  const amount = parseAmount(amountText);
-  const canSubmit = amount !== null && !submitting;
+  const amount = cents / 100;
+  const displayValue = cents > 0 ? formatCurrency(amount) : '';
+  const canSubmit = cents > 0 && !submitting;
+
+  const changeText = useCallback((text: string) => {
+    const digits = text.replace(/\D/g, '');
+    setCents(Math.min(Number(digits || '0'), MAX_CENTS));
+  }, []);
+
+  const selectQuickAmount = useCallback((value: number) => setCents(value * 100), []);
 
   // Retorna true se o saldo foi adicionado (a View decide voltar para a tela anterior).
   const submit = useCallback(async () => {
-    if (amount === null || submitting) return false;
+    if (cents <= 0 || submitting) return false;
 
     setSubmitting(true);
     try {
       await addBalance(amount);
-      notifySuccess(`${formatCurrency(amount)} adicionados à sua carteira!`);
+      notifySuccess('Saldo adicionado com sucesso!');
       return true;
     } catch (e) {
       notifyError(depositErrorMessage(e));
@@ -35,7 +49,7 @@ export function useAddBalanceViewModel() {
     } finally {
       setSubmitting(false);
     }
-  }, [amount, submitting]);
+  }, [cents, amount, submitting]);
 
-  return { amountText, setAmountText, canSubmit, submitting, submit };
+  return { displayValue, changeText, selectQuickAmount, canSubmit, submitting, submit };
 }

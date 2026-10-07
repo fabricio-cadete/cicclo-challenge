@@ -2,12 +2,13 @@ import { useRouter } from 'expo-router';
 import { Text, TextInput, View } from 'react-native';
 
 import { Button } from '../components/Button';
-import { useAddBalanceViewModel } from '../viewmodels/useAddBalanceViewModel';
+import { QUICK_AMOUNTS, useAddBalanceViewModel } from '../viewmodels/useAddBalanceViewModel';
 import { styles } from './AddBalanceScreen.styles';
 
 export default function AddBalanceScreen() {
   const router = useRouter();
-  const { amountText, setAmountText, canSubmit, submitting, submit } = useAddBalanceViewModel();
+  const { displayValue, changeText, selectQuickAmount, canSubmit, submitting, submit } =
+    useAddBalanceViewModel();
 
   async function handleSubmit() {
     if (await submit()) router.back();
@@ -15,17 +16,31 @@ export default function AddBalanceScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Valor (R$)</Text>
+      <Text style={styles.label}>Valor</Text>
       <TextInput
         style={styles.input}
-        value={amountText}
-        onChangeText={setAmountText}
-        placeholder="0,00"
-        keyboardType="decimal-pad"
+        value={displayValue}
+        onChangeText={changeText}
+        placeholder="R$ 0,00"
+        keyboardType="number-pad"
         editable={!submitting}
         onSubmitEditing={handleSubmit}
         autoFocus
       />
+
+      <View style={styles.quickAmounts}>
+        {QUICK_AMOUNTS.map((value) => (
+          <View key={value} style={styles.quickAmount}>
+            <Button
+              title={`R$ ${value}`}
+              variant="secondary"
+              onPress={() => selectQuickAmount(value)}
+              disabled={submitting}
+            />
+          </View>
+        ))}
+      </View>
+
       <Button
         title={submitting ? 'Processando...' : 'Adicionar saldo'}
         onPress={handleSubmit}

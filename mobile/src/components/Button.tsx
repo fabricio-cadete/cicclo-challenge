@@ -22,7 +22,11 @@ export function Button({ title, onPress, variant = 'primary', disabled = false }
         disabled && styles.disabled,
       ]}
     >
-      <Text style={[styles.text, variant === 'primary' ? styles.primaryText : styles.secondaryText]}>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        style={[styles.text, variant === 'primary' ? styles.primaryText : styles.secondaryText]}
+      >
         {title}
       </Text>
     </Pressable>

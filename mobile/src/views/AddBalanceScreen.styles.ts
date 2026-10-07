@@ -21,8 +21,16 @@ export const styles = StyleSheet.create({
     borderColor: colors.primary,
     paddingHorizontal: 16,
     paddingVertical: 14,
-    marginBottom: 24,
+    marginBottom: 16,
     fontSize: 24,
     color: '#1F2933',
+  },
+  quickAmounts: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 24,
+  },
+  quickAmount: {
+    flex: 1,
   },
 });
