@@ -164,6 +164,48 @@ public class ApiTests : IDisposable
         Assert.Equal(50.00m, await GetBalanceAsync());
     }
 
+    private Task<HttpResponseMessage> DepositAsync(decimal amount) =>
+        _client.PostAsJsonAsync("/wallet/deposit", new { amount });
+
+    [Fact]
+    public async Task Deposit_IncreasesBalance()
+    {
+        var response = await DepositAsync(25.50m);
+        var body = await response.Content.ReadFromJsonAsync<JsonElement>();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(75.50m, body.GetProperty("balance").GetDecimal());
+        Assert.Equal(75.50m, await GetBalanceAsync());
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-5)]
+    [InlineData(10.555)]
+    public async Task Deposit_InvalidAmount_ReturnsBadRequestAndKeepsBalance(decimal amount)
+    {
+        var response = await DepositAsync(amount);
+
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        Assert.Equal(50.00m, await GetBalanceAsync());
+    }
+
+    [Fact]
+    public async Task Deposit_AfterInsufficientBalance_AllowsExecution()
+    {
+        var washId = await GetServiceIdAsync("Lavagem");
+        await ExecuteAsync(washId);
+        await ExecuteAsync(washId);
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, (await ExecuteAsync(washId)).StatusCode);
+
+        await DepositAsync(10.00m);
+        var response = await ExecuteAsync(washId);
+
+        // 12,20 + 10,00 - 18,90
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(3.30m, await GetBalanceAsync());
+    }
+
     [Fact]
     public async Task Execute_ConcurrentRequests_NeverOverdrawsWallet()
     {

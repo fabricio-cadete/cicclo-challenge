@@ -27,3 +27,10 @@ POST {{Cicclo.Api_HostAddress}}/services/{{serviceId}}/execute
 Content-Type: application/json
 
 { "requestId": "{{$guid}}" }
+
+###
+
+POST {{Cicclo.Api_HostAddress}}/wallet/deposit
+Content-Type: application/json
+
+{ "amount": 25.50 }

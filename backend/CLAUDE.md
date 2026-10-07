@@ -46,6 +46,7 @@ dotnet run --project backend/src/Cicclo.Api --launch-profile http
 - Serviços: http://localhost:5080/services
 - Carteira: http://localhost:5080/wallet
 - Executar serviço: `POST /services/{serviceId}/execute` com `{ "requestId": "<guid>" }` (200 ok, 404 serviço inexistente, 409 requestId usado em outro serviço, 422 saldo insuficiente, 400 dados inválidos)
+- Adicionar saldo: `POST /wallet/deposit` com `{ "amount": 25.50 }` (200 com a carteira atualizada; 400 se o valor for <= 0 ou tiver mais de 2 casas)
 - OpenAPI: http://localhost:5080/openapi/v1.json (apenas Development)
 - Exemplos de requisição em `src/Cicclo.Api/Cicclo.Api.http`
 

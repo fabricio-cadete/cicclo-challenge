@@ -8,6 +8,7 @@ Expo SDK 57, React Native 0.86, TypeScript 6. Arquitetura MVVM.
 
 ```text
 src/
+├── app/         # rotas do Expo Router (só reexportam as views)
 ├── views/       # telas e apresentação
 ├── viewmodels/  # hooks com estado e ações das telas
 ├── models/      # tipos e contratos de dados
@@ -60,7 +61,7 @@ Instalar dependências com `npx expo install <pacote>` (resolve versões compat�
 
 ## Navegação
 
-Quando houver navegação, usar Expo Router com rotas em `src/app/` (ver `AGENTS.md`). Ainda não há navegação nesta etapa.
+Expo Router com rotas em `src/app/` (`_layout.tsx` define a Stack e o `<Toast />`; `index.tsx` é a Home e `add-balance.tsx` a tela de adicionar saldo). Os arquivos de rota só reexportam a tela de `views/`; não colocar componentes ou lógica em `src/app/`. Nomes de arquivo em kebab-case. A Home recarrega carteira e serviços sempre que volta ao foco (`useFocusEffect`).
 
 ## Convenções
 

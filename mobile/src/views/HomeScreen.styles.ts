@@ -20,6 +20,9 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 16,
     padding: 24,
+    marginBottom: 16,
+  },
+  addBalance: {
     marginBottom: 32,
   },
   walletLabel: {

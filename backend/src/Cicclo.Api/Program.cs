@@ -22,6 +22,7 @@ builder.Services.AddScoped<IQueryHandler<ListServicesQuery, IReadOnlyList<Servic
 
 builder.Services.AddSingleton<IWalletRepository, InMemoryWalletRepository>();
 builder.Services.AddScoped<IQueryHandler<GetWalletQuery, WalletDto>, GetWalletQueryHandler>();
+builder.Services.AddScoped<ICommandHandler<AddBalanceCommand, WalletDto>, AddBalanceCommandHandler>();
 
 builder.Services.AddSingleton<IServiceExecutionRepository, InMemoryServiceExecutionRepository>();
 // Singleton: o handler mantém o lock que torna o débito atômico.

@@ -1,6 +1,7 @@
 import { isAxiosError } from 'axios';
 import { randomUUID } from 'expo-crypto';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
 
 import { LaundryService } from '../models/LaundryService';
 import { Wallet } from '../models/Wallet';
@@ -31,29 +32,34 @@ export function useHomeViewModel() {
   // se faltar resposta (rede/timeout), a nova tentativa reaproveita o id e a API não cobra duas vezes.
   const requestIds = useRef(new Map<string, string>());
 
-  useEffect(() => {
-    // Evita atualizar o estado se a tela for desmontada ou um novo carregamento começar.
-    let active = true;
+  // Carrega ao abrir a tela e de novo sempre que ela volta ao foco (ex.: depois de adicionar saldo).
+  useFocusEffect(
+    useCallback(() => {
+      // Evita atualizar o estado se a tela perder o foco ou um novo carregamento começar.
+      let active = true;
 
-    Promise.all([getWallet(), getServices()])
-      .then(([walletData, servicesData]) => {
-        if (!active) return;
-        setWallet(walletData);
-        setServices(servicesData);
-        setError(null);
-      })
-      .catch(() => {
-        if (!active) return;
-        setError('Não foi possível carregar as informações. Tente novamente mais tarde.');
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+      Promise.all([getWallet(), getServices()])
+        .then(([walletData, servicesData]) => {
+          if (!active) return;
+          setWallet(walletData);
+          setServices(servicesData);
+          setError(null);
+        })
+        .catch(() => {
+          if (!active) return;
+          setError('Não foi possível carregar as informações. Tente novamente mais tarde.');
+        })
+        .finally(() => {
+          if (active) setLoading(false);
+        });
 
-    return () => {
-      active = false;
-    };
-  }, [reloadCount]);
+      return () => {
+        active = false;
+      };
+      // reloadCount não é lido aqui: mudar o valor recria o callback e dispara uma nova busca (reload).
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [reloadCount]),
+  );
 
   const reload = useCallback(() => {
     setLoading(true);

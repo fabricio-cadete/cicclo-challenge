@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { FlatList, Text, View } from 'react-native';
 
@@ -9,6 +10,7 @@ import { formatCurrency } from '../utils/formatCurrency';
 import { styles } from './HomeScreen.styles';
 
 export default function HomeScreen() {
+  const router = useRouter();
   const {
     wallet,
     services,
@@ -47,6 +49,10 @@ export default function HomeScreen() {
       <View style={styles.walletCard}>
         <Text style={styles.walletLabel}>Saldo da carteira</Text>
         <Text style={styles.walletBalance}>{formatCurrency(wallet?.balance ?? 0)}</Text>
+      </View>
+
+      <View style={styles.addBalance}>
+        <Button title="Adicionar saldo" variant="secondary" onPress={() => router.push('/add-balance')} />
       </View>
 
       <Text style={styles.sectionTitle}>Serviços disponíveis</Text>
