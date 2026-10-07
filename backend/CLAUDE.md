@@ -12,7 +12,7 @@ backend/
 │   ├── Cicclo.Application/    # casos de uso e contratos (Commands, Queries, Abstractions)
 │   ├── Cicclo.Domain/         # regras de negócio, sem dependências
 │   └── Cicclo.Infrastructure/ # implementa contratos da Application
-└── tests/{Cicclo.Domain.Tests,Cicclo.Application.Tests}/  # xUnit
+└── tests/{Cicclo.Domain.Tests,Cicclo.Application.Tests,Cicclo.Api.Tests}/  # xUnit (Api.Tests: integração HTTP)
 ```
 
 Dependências entre camadas:
@@ -24,6 +24,7 @@ Api ------------> Application ------> Domain
 
 Domain.Tests ------> Domain
 Application.Tests -> Application
+Api.Tests ---------> Api
 ```
 
 - Domain não depende de nenhuma outra camada.
