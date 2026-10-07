@@ -23,7 +23,7 @@ Accept: application/json
 ###
 
 # requestId identifica a tentativa; repetir o mesmo valor não cobra de novo
-POST {{Cicclo.Api_HostAddress}}/services/{{serviceId}}/executions
+POST {{Cicclo.Api_HostAddress}}/services/{{serviceId}}/execute
 Content-Type: application/json
 
 { "requestId": "{{$guid}}" }

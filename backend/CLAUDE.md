@@ -44,7 +44,7 @@ dotnet run --project backend/src/Cicclo.Api --launch-profile http
 - Health: http://localhost:5080/health
 - Serviços: http://localhost:5080/services
 - Carteira: http://localhost:5080/wallet
-- Executar serviço: `POST /services/{serviceId}/executions` com `{ "requestId": "<guid>" }` (200 ok, 404 serviço inexistente, 409 requestId usado em outro serviço, 422 saldo insuficiente, 400 dados inválidos)
+- Executar serviço: `POST /services/{serviceId}/execute` com `{ "requestId": "<guid>" }` (200 ok, 404 serviço inexistente, 409 requestId usado em outro serviço, 422 saldo insuficiente, 400 dados inválidos)
 - OpenAPI: http://localhost:5080/openapi/v1.json (apenas Development)
 - Exemplos de requisição em `src/Cicclo.Api/Cicclo.Api.http`
 

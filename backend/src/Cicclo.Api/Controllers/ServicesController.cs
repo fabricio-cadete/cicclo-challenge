@@ -25,7 +25,7 @@ public sealed class ServicesController(
         return Ok(services);
     }
 
-    [HttpPost("{serviceId:guid}/executions")]
+    [HttpPost("{serviceId:guid}/execute")]
     public async Task<ActionResult<ServiceExecutionDto>> Execute(
         Guid serviceId,
         ExecuteServiceRequest request,
