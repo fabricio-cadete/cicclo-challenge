@@ -4,11 +4,18 @@ import { colors } from '../theme/colors';
 
 export const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.primary,
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 24,
     alignItems: 'center',
+  },
+  primary: {
+    backgroundColor: colors.primary,
+  },
+  secondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
   pressed: {
     opacity: 0.8,
@@ -19,6 +26,11 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  primaryText: {
     color: '#FFFFFF',
+  },
+  secondaryText: {
+    color: colors.primary,
   },
 });

@@ -2,13 +2,27 @@ import { StatusBar } from 'expo-status-bar';
 import { FlatList, Text, View } from 'react-native';
 
 import { Button } from '../components/Button';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 import { Loading } from '../components/Loading';
 import { useHomeViewModel } from '../viewmodels/useHomeViewModel';
 import { formatCurrency } from '../utils/formatCurrency';
 import { styles } from './HomeScreen.styles';
 
 export default function HomeScreen() {
-  const { wallet, services, loading, error, reload } = useHomeViewModel();
+  const {
+    wallet,
+    services,
+    loading,
+    error,
+    reload,
+    selectedService,
+    executing,
+    feedback,
+    canExecute,
+    selectService,
+    cancelSelection,
+    confirmExecution,
+  } = useHomeViewModel();
 
   if (loading && !wallet) {
     return (
@@ -36,6 +50,12 @@ export default function HomeScreen() {
         <Text style={styles.walletBalance}>{formatCurrency(wallet?.balance ?? 0)}</Text>
       </View>
 
+      {feedback && (
+        <View style={[styles.feedback, feedback.type === 'success' ? styles.feedbackSuccess : styles.feedbackError]}>
+          <Text style={styles.feedbackText}>{feedback.message}</Text>
+        </View>
+      )}
+
       <Text style={styles.sectionTitle}>Serviços disponíveis</Text>
 
       <FlatList
@@ -46,10 +66,26 @@ export default function HomeScreen() {
         ListEmptyComponent={<Text style={styles.emptyText}>Nenhum serviço disponível.</Text>}
         renderItem={({ item }) => (
           <View style={styles.serviceItem}>
-            <Text style={styles.serviceName}>{item.name}</Text>
-            <Text style={styles.servicePrice}>{formatCurrency(item.price)}</Text>
+            <View>
+              <Text style={styles.serviceName}>{item.name}</Text>
+              <Text style={styles.servicePrice}>{formatCurrency(item.price)}</Text>
+            </View>
+            <Button title="Utilizar" onPress={() => selectService(item)} disabled={!canExecute(item)} />
           </View>
         )}
+      />
+
+      <ConfirmDialog
+        visible={selectedService !== null}
+        title="Confirmar uso do serviço"
+        message={
+          selectedService
+            ? `Utilizar "${selectedService.name}" por ${formatCurrency(selectedService.price)}? O valor será debitado da sua carteira.`
+            : ''
+        }
+        loading={executing}
+        onConfirm={confirmExecution}
+        onCancel={cancelSelection}
       />
 
       <StatusBar style="dark" />

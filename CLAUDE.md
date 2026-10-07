@@ -48,7 +48,7 @@ cicclo-challenge/
 
 ## Estado atual
 
-Estrutura, configurações e inicialização. O app tem o axios em `mobile/src/services/api.ts` e a tela inicial (MVVM) que lista carteira e serviços. O Domain já tem Wallet, LaundryService e ServiceExecution com testes xUnit. A API expõe `GET /services`, `GET /wallet` e `POST /services/{id}/execute` (dados em memória, sem banco de dados). Ainda **não há**: solicitação de serviço pelo app, autenticação e testes do app.
+Estrutura, configurações e inicialização. O app tem o axios em `mobile/src/services/api.ts` e a tela inicial (MVVM) que lista carteira e serviços e solicita a execução de um serviço. O Domain já tem Wallet, LaundryService e ServiceExecution com testes xUnit. A API expõe `GET /services`, `GET /wallet` e `POST /services/{id}/execute` (dados em memória, sem banco de dados). Ainda **não há**: autenticação e testes do app.
 
 ## Convenções de trabalho
 
