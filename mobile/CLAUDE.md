@@ -27,6 +27,7 @@ npm ci
 npm start            # Expo Go ou emulador Android (tecla a)
 npm run web          # prévia no navegador
 npm run typecheck
+npm test             # testes (Jest + React Native Testing Library)
 npm run lint
 npx expo-doctor
 npm run export:check # valida bundles JS; não gera APK/IPA
@@ -52,6 +53,13 @@ Instalar dependências com `npx expo install <pacote>` (resolve versões compat�
 
 - A cor primária do app é `#634A72`, definida em `src/theme/colors.ts` (`colors.primary`).
 - Estilos importam as cores de `theme/colors.ts`; não repetir hexadecimais nos arquivos `.styles.ts`.
+
+## Testes
+
+- Jest (`jest-expo`) + React Native Testing Library, em `mobile/__tests__/` (nunca dentro de `src/app/`). `npm test` roda tudo.
+- As telas são renderizadas com `renderRouter` (Expo Router) e a rede é substituída por uma API falsa com estado (`test-utils/fakeApi.ts`), então os testes passam por View, ViewModel e services de verdade. O `utils/notify` é mockado para checar os avisos.
+- Poucos testes, nos fluxos principais: carregar a Home, utilizar serviço (com saldo, cancelar, API recusa, nova tentativa com o mesmo `requestId`), botão desabilitado sem saldo e adicionar saldo (valor digitado, atalhos, valor inválido, falha da API).
+- Helpers de teste ficam em `test-utils/`, fora de `__tests__/` (senão o Jest os trata como testes).
 
 ## Feedback ao usuário
 
