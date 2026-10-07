@@ -13,6 +13,7 @@ src/
 ├── models/      # tipos e contratos de dados
 ├── services/    # comunicação HTTP e integrações
 ├── components/  # componentes visuais reutilizáveis
+├── utils/       # funções auxiliares (ex.: formatCurrency)
 └── theme/       # cores e tokens visuais (colors.ts)
 ```
 

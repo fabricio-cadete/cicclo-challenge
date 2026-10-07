@@ -1,12 +1,12 @@
 # Organização do app
 
-- views: telas e apresentação; HomeScreen contém somente a tela inicial.
-- viewmodels: espaço reservado para hooks com estado e ações das telas (MVVM).
+- views: telas e apresentação; a View só lê o estado do ViewModel e dispara ações.
+- viewmodels: hooks com estado e ações das telas (MVVM).
 - models: tipos e contratos de dados.
 - services: comunicação HTTP e integrações.
 - components: componentes visuais reutilizáveis.
 
-Ainda não há ViewModels, chamadas HTTP ou regras de negócio. Não há navegação entre telas nesta etapa. Ao adicionar navegação, usar Expo Router com rotas em src/app, conforme AGENTS.md.
+Hoje existe a tela inicial (`HomeScreen`) com `useHomeViewModel`, que carrega a carteira e os serviços pelos services `walletService` e `laundryService`. Não há navegação entre telas nesta etapa. Ao adicionar navegação, usar Expo Router com rotas em src/app, conforme AGENTS.md.
 
 ## Estilos
 
